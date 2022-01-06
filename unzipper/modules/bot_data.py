@@ -64,11 +64,11 @@ class Buttons:
 
 class Messages:
     START_TEXT = """
-Hi **{}**, I'm **Nexa Unzipper Bot** 😇!
+Hi **{}**, I'm An **Extract Files Bot** 😇!
 
 `I can extract archives like zip, rar, tar etc.`
 
-**Made with ❤️ by @NexaBotsUpdates**
+**Made with ❤️ by @Modzilla**
     """
 
     HELP_TXT = """
@@ -87,15 +87,15 @@ Hi **{}**, I'm **Nexa Unzipper Bot** 😇!
     """
 
     ABOUT_TXT = """
-**About Nexa Unzipper Bot,**
+**About Extract Files Bot,**
 
 ✘ **Language:** [Python](https://www.python.org/)
 ✘ **Framework:** [Pyrogram](https://docs.pyrogram.org/)
-✘ **Source Code:** [Itz-fork/Unzipper-Bot](https://github.com/Itz-fork/Unzipper-Bot)
-✘ **Developer:** [Itz-fork](https://github.com/Itz-fork)
+✘ **Source Code:** [Itz-fork/Unzipper-Bot](https://t.me/NOSOURCECODE)
+✘ **Developer:** [Modzilla](https://t.me/Iggie)
 
 
-**Made with ❤️ by @NexaBotsUpdates**
+**Made with ❤️ by @Modzilla**
     """
 
     LOG_TXT = """
