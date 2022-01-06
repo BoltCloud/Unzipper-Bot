@@ -66,16 +66,18 @@ class Messages:
     START_TEXT = """
 Hi **{}**, I'm An **Extract Files Bot** 😇!
 
-`I can extract archives like zip, rar, tar etc.`
+Send Your Archive File, Select The Appropriate Options You Wish To. You Can Clear Your All Files With `/clean` Your Process Queue Will Be Cleared. If Anything Is Uploading At Now, It Will Be Cleared. Be Careful ⚠️.
 
-**Made with ❤️ by @Modzilla**
+🍒 Supported Formats: **7Z, APM, ARJ, BZ2, BZIP2, CAB, CHM, CPIO, CRAMFS, DEB, DMG, FAT, GZ, GZIP, HFS, ISO, LZH, LZMA, LZMA2, MBR, MSI, MSLZ, NSIS, NTFS, RAR, RPM, SQUASHFS, TAR, TAR.BZ2, TAR.GZ, TAR.XZ, TBZ2, TGZ, UDF, VHD, WIM, XAR, Z, ZIP**
+
+**Powered By @Modzilla**
     """
 
     HELP_TXT = """
 **How To Extract? 🤔**
 
-`1. Send the file or link that you want to extract.`
-`2. Click on extract button (If you sent a link use "Url Extract" button. If it's a file just use "File Extract" button).`
+`1. Send The File Or Link That You Want To Extract.`
+`2. Click On Extract Button (If you sent a link use "Url Extract" button. If it's a file just use "File Extract" button).`
 
 
 **Note:**
