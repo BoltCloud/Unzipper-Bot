@@ -114,7 +114,7 @@ async def unzipper_cb(unzip_bot: Client, query: CallbackQuery):
             paths = await get_files(path=ext_files_dir)
             i_e_buttons = await make_keyboard(paths=paths, user_id=user_id, chat_id=query.message.chat.id)
             try:
-                await query.message.edit("`Select Files to Upload!`", reply_markup=i_e_buttons)
+                await query.message.edit("`Kindly Select Files To Upload!`", reply_markup=i_e_buttons)
             except:
                 try:
                     await query.message.delete()
@@ -180,7 +180,7 @@ async def unzipper_cb(unzip_bot: Client, query: CallbackQuery):
                             query=query,
                             full_path=f"{Config.DOWNLOAD_LOCATION}/{spl_data[1]}"
                         )
-        await query.message.edit("**Successfully Uploaded!** \n\n **Join @NexaBotsUpdates ❤️**")
+        await query.message.edit("**Successfully Uploaded!** \n\n **Join @Modzilla ❤️**")
         try:
             shutil.rmtree(f"{Config.DOWNLOAD_LOCATION}/{spl_data[1]}")
         except Exception as e:
