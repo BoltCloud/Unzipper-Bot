@@ -3,7 +3,7 @@ echo "
 
 Copyright (c) 2021 Itz-fork
 
---> Join @NexaBotsUpdates
+--> Join @Modzilla
 --> Follow Itz-fork on Github
 "
 python3 -m unzipper
