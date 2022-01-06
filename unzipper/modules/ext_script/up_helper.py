@@ -19,7 +19,7 @@ async def send_file(unzip_bot, c_id, doc_f, query, full_path):
                 chat_id=c_id,
                 text="`File Size is too large to send in telegram 🥶!` \n\n**Sorry, but I can't do anything about this as it's a telegram limitation 😔!**"
             )
-        await unzip_bot.send_document(chat_id=c_id, document=doc_f, caption="**Extracted by @NexaUnzipper_Bot**")
+        await unzip_bot.send_document(chat_id=c_id, document=doc_f, caption="**Extracted By @ExtractFilesBot**")
         os.remove(doc_f)
     except FloodWait as f:
         asyncio.sleep(f.x)
