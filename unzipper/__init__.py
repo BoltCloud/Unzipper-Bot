@@ -14,5 +14,4 @@ unzipperbot = Client(
         api_hash=Config.API_HASH,
         plugins=plugins,
         sleep_threshold=10,
-        workers=200
     )
