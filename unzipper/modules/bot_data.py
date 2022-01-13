@@ -156,12 +156,12 @@ Send Your Archive File, Select The Appropriate Options You Wish To. You Can Clea
 **Note:** `This action cannot be undone!`
     """
 
-SELECT_UPLOAD_MODE_TXT = """
+    SELECT_UPLOAD_MODE_TXT = """
 `Please select the upload mode by clicking on below buttons!`
-**Current Upload Mode Is:** `{}`
+**Current Upload mode is:** `{}`
 """
-CHANGED_UPLOAD_MODE_TXT = """
-**Successfully Changed Upload Mode To** `{}` **✅!**
+    CHANGED_UPLOAD_MODE_TXT = """
+**Successfully changed upload mode to** `{}` **✅!**
 """
 
 
