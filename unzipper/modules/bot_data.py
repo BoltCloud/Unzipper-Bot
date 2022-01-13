@@ -141,7 +141,7 @@ Send Your Archive File, Select The Appropriate Options You Wish To. You Can Clea
 **ERROR:** {}
 
 
-**Please report this at @Nexa_bots if you think this is a serious error**
+**Please report this at @Iggie if you think this is a serious error**
     """
 
     CANCELLED_TXT = """
