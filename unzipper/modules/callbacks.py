@@ -22,7 +22,6 @@ from config import Config
 
 # Function to download files from direct link using aiohttp
 async def download(url, path):
-    CHUNK_SIZE = 1024 * 6
     async with ClientSession() as session:
         async with session.get(url, timeout=None) as resp:
             async with openfile(path, mode="wb") as file:
