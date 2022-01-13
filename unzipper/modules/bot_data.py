@@ -78,6 +78,8 @@ Send Your Archive File, Select The Appropriate Options You Wish To. You Can Clea
 `1. Send The File Or Link That You Want To Extract.`
 `2. Click On Extract Button (If you sent a link use "Url Extract" button. If it's a file just use "File Extract" button).`
 
+**How To Change Upload Mode? 🤔**
+ `Send` **/mode** `command to the bot. You can change upload mode from there.`
 
 **Note:**
     **1.** `If your archive is password protected select` **(Password) Extract 📂** `mode. Bot isn't a GOD to know your file's password so If this happens just send that password!`
