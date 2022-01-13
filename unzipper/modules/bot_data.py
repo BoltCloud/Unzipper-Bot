@@ -5,61 +5,60 @@ from pyrogram.types import InlineKeyboardMarkup, InlineKeyboardButton
 
 # Inline buttons
 class Buttons:
-    START_BUTTON=InlineKeyboardMarkup(
-        [
+    START_BUTTON = InlineKeyboardMarkup([
             [
-                InlineKeyboardButton("Help 📜", callback_data="helpcallback"),
-                InlineKeyboardButton("About ⁉️", callback_data="aboutcallback")
+                InlineKeyboardButton("HELP 📜", callback_data="helpcallback"),
+                InlineKeyboardButton("ABOUT ⁉️", callback_data="aboutcallback")
             ]
-        ]
-    )
+        ])
     
-    CHOOSE_E_F__BTNS=InlineKeyboardMarkup(
-        [
+    CHOOSE_E_F__BTNS = InlineKeyboardMarkup([
             [
-                InlineKeyboardButton("File Extract 📂", callback_data="extract_file|tg_file|no_pass"),
+                InlineKeyboardButton("FILE EXTRACT 📂", callback_data="extract_file|tg_file|no_pass"),
             ],
             [
-                InlineKeyboardButton("File (Password) Extract 📂", callback_data="extract_file|tg_file|with_pass")
+                InlineKeyboardButton("FILE (PASSWORD) EXTRACT 📂", callback_data="extract_file|tg_file|with_pass")
             ],
             [
-                InlineKeyboardButton("Cancel ❌", callback_data="cancel_dis")
+                InlineKeyboardButton("CANCEL ❌", callback_data="cancel_dis")
             ]
-        ]
-    )
+        ])
 
-    CHOOSE_E_U__BTNS=InlineKeyboardMarkup(
-        [
+    CHOOSE_E_U__BTNS = InlineKeyboardMarkup([
             [
-                InlineKeyboardButton("🔗 Url Extract 📂", callback_data="extract_file|url|no_pass"),
+                InlineKeyboardButton("🔗 URL EXTRACT 📂", callback_data="extract_file|url|no_pass"),
             ],
             [
-                InlineKeyboardButton("🔗 (Password) Url Extract 📂", callback_data="extract_file|url|with_pass")
+                InlineKeyboardButton("🔗 (PASSWORD) URL EXTRACT 📂", callback_data="extract_file|url|with_pass")
             ],
             [
-                InlineKeyboardButton("Cancel ❌", callback_data="cancel_dis")
+                InlineKeyboardButton("CANCEL ❌", callback_data="cancel_dis")
             ]
-        ]
-    )
+        ])
 
-    CLN_BTNS=InlineKeyboardMarkup(
-        [
+    CLN_BTNS = InlineKeyboardMarkup([
             [
-                InlineKeyboardButton("Clean My Files 😇", callback_data="cancel_dis")
+                InlineKeyboardButton("CLEAN MY FILES 😇", callback_data="cancel_dis")
             ],
             [
-                InlineKeyboardButton("TF! Nooo 😳", callback_data="nobully")
+                InlineKeyboardButton("TF! NOOO 😳", callback_data="nobully")
             ]
-        ]
-    )
+        ])
     
-    ME_GOIN_HOME=InlineKeyboardMarkup(
-        [
+    ME_GOIN_HOME = InlineKeyboardMarkup([
             [
-                InlineKeyboardButton("Back 🏡", callback_data="megoinhome")
+                InlineKeyboardButton("BACK 🏡", callback_data="megoinhome")
             ]
-        ]
-    )
+        ])
+
+    SET_UPLOAD_MODE_BUTTONS = InlineKeyboardMarkup([
+            [
+                InlineKeyboardButton("UPLOAD AS FILE 📁", callback_data="set_mode|doc")
+            ],
+            [
+                InlineKeyboardButton("UPLOAD AS VIDEO 📹", callback_data="set_mode|video")
+            ]
+        ])
 
 
 class Messages:
@@ -131,7 +130,7 @@ Send Your Archive File, Select The Appropriate Options You Wish To. You Can Clea
  - `Please make sure that you selected the right mode!`
  - `May be Your archive format isn't supported 😔`
 
-**Please report this at @Nexa_bots if you think this is a serious error**
+**Please report this at @Iggie if you think this is a serious error**
     """
 
     ERROR_TXT = """
@@ -154,6 +153,14 @@ Send Your Archive File, Select The Appropriate Options You Wish To. You Can Clea
 
 **Note:** `This action cannot be undone!`
     """
+
+SELECT_UPLOAD_MODE_TXT = """
+`Please select the upload mode by clicking on below buttons!`
+**Current Upload Mode Is:** `{}`
+"""
+    CHANGED_UPLOAD_MODE_TXT = """
+**Successfully Changed Upload Mode To** `{}` **✅!**
+"""
 
 
 # List of error messages from p7zip
