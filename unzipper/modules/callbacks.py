@@ -80,7 +80,7 @@ async def unzipper_cb(unzip_bot: Client, query: CallbackQuery):
                         archive = f"{download_path}/archive_from_{user_id}{os.path.splitext(url)[1]}"
                         await answer_query(query, f"**Trying to download!** \n\n**Url:** `{url}` \n\n`This may take a while, Go and grab a coffee ☕️!`", unzip_client=unzip_bot)
                         loop = get_running_loop()
-                        await download(url, archive))
+                        await download(url, archive)
                         e_time = time()
                     else:
                         return await query.message.edit("**Sorry I can't download that URL 🥺!**")
