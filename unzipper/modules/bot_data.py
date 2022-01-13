@@ -160,7 +160,7 @@ SELECT_UPLOAD_MODE_TXT = """
 `Please select the upload mode by clicking on below buttons!`
 **Current Upload Mode Is:** `{}`
 """
-    CHANGED_UPLOAD_MODE_TXT = """
+CHANGED_UPLOAD_MODE_TXT = """
 **Successfully Changed Upload Mode To** `{}` **✅!**
 """
 
