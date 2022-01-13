@@ -21,6 +21,7 @@ from unzipper.helpers_nexa.unzip_help import progress_for_pyrogram, TimeFormatte
 from unzipper.helpers_nexa.database import set_upload_mode
 from config import Config
 
+
 # Function to download files from direct link using pycurl
 async def download(url, path):
     with open(path, "wb") as file:
