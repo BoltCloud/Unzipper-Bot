@@ -53,7 +53,7 @@ async def clean_ma_files(_, message: Message):
 
 @Client.on_message(filters.incoming & filters.private & filters.regex(https_url_regex) | filters.document)
 async def extract_dis_archive(_, message: Message):
-    unzip_msg = await message.reply("`Processing ⚙️...`", reply_to_message_id=message.message_id)
+    unzip_msg = await message.reply("`Processing ⚙️...`", reply_to_message_id=message.id)
     user_id = message.from_user.id
     download_path = f"{Config.DOWNLOAD_LOCATION}/{user_id}"
     if os.path.isdir(download_path):
@@ -91,6 +91,11 @@ async def send_stats(_, message: Message):
 **👥 Users:** 
  ↳**Users in Database:** `{total_users}`
  ↳**Total Banned Users:** `{total_banned_users}`
+
+
+**🌐 Bandwith Usage,**
+ ↳ **Sent:** `{humanbytes(net_usage.bytes_sent)}`
+ ↳ **Received:** `{humanbytes(net_usage.bytes_recv)}`
 
 
 **💾 Disk Usage,**
