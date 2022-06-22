@@ -193,7 +193,7 @@ If you want to set-up your own thumbnail, you can do so using following commands
  - `Please make sure that you selected the right mode!`
  - `May be Your archive format isn't supported 😔`
 
-**Please report this at @Nexa_bots if you think this is a serious error**
+**Please report this at @Iggie if you think this is a serious error**
     """
 
     ERROR_TXT = """
@@ -202,7 +202,7 @@ If you want to set-up your own thumbnail, you can do so using following commands
 **ERROR:** {}
 
 
-**Please report this at @Nexa_bots if you think this is a serious error**
+**Please report this at @Iggie if you think this is a serious error**
     """
 
     CANCELLED_TXT = """
