@@ -59,9 +59,9 @@ async def send_file(unzip_bot, c_id, doc_f, query, full_path):
         sthumb = await return_thumb(c_id, doc_f)
         if cum == "video":
             vid_duration = await run_shell_cmds(f"ffprobe -v error -show_entries format=duration -of default=noprint_wrappers=1:nokey=1 {doc_f}")
-            await unzip_bot.send_video(chat_id=c_id, video=doc_f, caption="**Extracted by @NexaUnzipper_Bot**", duration=int(vid_duration) if vid_duration.isnumeric() else 0, thumb=sthumb)
+            await unzip_bot.send_video(chat_id=c_id, video=doc_f, caption="**Extracted by @ExtractFilesBot**", duration=int(vid_duration) if vid_duration.isnumeric() else 0, thumb=sthumb)
         else:
-            await unzip_bot.send_document(chat_id=c_id, document=doc_f, caption="**Extracted by @NexaUnzipper_Bot**", thumb=sthumb)
+            await unzip_bot.send_document(chat_id=c_id, document=doc_f, caption="**Extracted by @ExtractFilesBot**", thumb=sthumb)
         os.remove(doc_f)
         os.remove(sthumb)
     except FloodWait as f:
