@@ -1,30 +1,23 @@
-# Copyright (c) 2021 Itz-fork
+# Copyright (c) 2022 Itz-fork
 # Don't kang this else your dad is gae
 import os
-import asyncio
 import re
 import shutil
 import psutil
+import asyncio
 
-from pyrogram import Client, filters
-from pyrogram.types import Message
-from pyrogram.errors import FloodWait
-
-from .bot_data import Buttons, Messages
-from unzipper.helpers_nexa.database import (
-    check_user,
-    del_user,
-    count_users,
-    get_users_list,
-    # Banned Users db
-    add_banned_user,
-    del_banned_user,
-    count_banned_users,
-    get_upload_mode
-)
-from unzipper.helpers_nexa.unzip_help import humanbytes
 from config import Config
-
+from pyrogram import Client, filters
+from pyrogram.errors import FloodWait
+from pyrogram.types import Message
+from unzipper.helpers_nexa.database.users import (add_banned_user,  # Banned Users db
+                                                  check_user, get_users_list,
+                                                  count_users, count_banned_users,
+                                                  del_user, del_banned_user)
+from unzipper.helpers_nexa.database.thumbnail import save_thumbnail, get_thumbnail, del_thumbnail
+from unzipper.helpers_nexa.database.upload_mode import get_upload_mode
+from unzipper.helpers_nexa.unzip_help import humanbytes
+from .bot_data import Buttons, Messages
 
 # Regex for http/https urls
 https_url_regex = ("((http|https)://)(www.)?" +
@@ -66,6 +59,39 @@ async def extract_dis_archive(_, message: Message):
         await unzip_msg.edit("`Hold up! What Should I Extract 😳?`")
 
 
+# Thumbnail stuff
+@Client.on_message(filters.private & filters.command(["save", "set_thumb"]))
+async def save_dis_thumb(_, message: Message):
+    prs_msg = await message.reply("`Processing ⚙️...`", reply_to_message_id=message.id)
+    rply = message.reply_to_message
+    if not rply or not rply.photo:
+        return await prs_msg.edit("`Reply to an image file to save it as a thumbnail!`")
+    await save_thumbnail(message.from_user.id, rply)
+    await prs_msg.edit("**Successfully saved the thumbnail ✅!**")
+
+
+@Client.on_message(filters.private & filters.command(["thget", "get_thumb"]))
+async def give_my_thumb(_, message: Message):
+    prs_msg = await message.reply("`Processing ⚙️...`", reply_to_message_id=message.id)
+    gthumb = await get_thumbnail(message.from_user.id)
+    if not gthumb:
+        return await prs_msg.edit("No thumbnails found. Please set one using `/set_thumb` command!")
+    await prs_msg.delete()
+    await message.reply_photo(gthumb)
+    os.remove(gthumb)
+
+
+@Client.on_message(filters.private & filters.command(["thdel", "del_thumb"]))
+async def delete_my_thumb(_, message: Message):
+    prs_msg = await message.reply("`Processing ⚙️...`", reply_to_message_id=message.id)
+    texist = await get_thumbnail(message.from_user.id)
+    if not texist:
+        return await prs_msg.edit("`When saving a thumbnail?`")
+    await del_thumbnail(message.from_user.id)
+    os.remove(texist)
+    await prs_msg.edit("**Successfully deleted the thumbnail ✅!**")
+
+
 # Database Commands
 @Client.on_message(filters.private & filters.command(["mode", "setmode"]))
 async def set_up_mode_for_user(_, message: Message):
@@ -80,6 +106,7 @@ async def send_stats(_, message: Message):
     total = humanbytes(total)
     used = humanbytes(used)
     free = humanbytes(free)
+    net_usage = psutil.net_io_counters()
     cpu_usage = psutil.cpu_percent()
     ram_usage = psutil.virtual_memory().percent
     disk_usage = psutil.disk_usage('/').percent
