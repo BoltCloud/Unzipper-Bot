@@ -1,4 +1,4 @@
-# Copyright (c) 2021 Itz-fork
+# Copyright (c) 2022 Itz-fork
 # Don't kang this else your dad is gae
 
 import os
@@ -14,5 +14,5 @@ if __name__ == "__main__" :
     unzipperbot.start()
     print("Checking Log Channel ...")
     check_logs()
-    print("Bot is active Now! Join @Modzilla")
+    print("Bot is active Now! Join @Modzilla)
     idle()
