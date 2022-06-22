@@ -1,33 +1,34 @@
-# Copyright (c) 2021 Itz-fork
+# Copyright (c) 2022 Itz-fork
 # Don't kang this else your dad is gae
 import os
-import subprocess
 
+from subprocess import Popen, PIPE
 from pykeyboard import InlineKeyboard
 from pyrogram.types import InlineKeyboardButton
+from unzipper.helpers_nexa.unzip_help import run_cmds_on_cr
 
 
-## Run commands in shell
-async def __run_cmds_unzipper(command):
-    ext_cmd = subprocess.Popen(
-        command, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
+# Run commands in shell
+def __run_cmds_unzipper(ar):
+    ext_cmd = Popen(
+        ar["cmd"], stdout=PIPE, stderr=PIPE, shell=True)
     ext_out = ext_cmd.stdout.read()[:-1].decode("utf-8")
     return ext_out
 
 
-## Extract with 7z
+# Extract with 7z
 async def _extract_with_7z_helper(path, archive_path, password=None):
     if password:
         command = f"7z x -o{path} -p{password} {archive_path} -y"
     else:
         command = f"7z x -o{path} {archive_path} -y"
-    return await __run_cmds_unzipper(command)
+    return await run_cmds_on_cr(__run_cmds_unzipper, cmd=command)
 
 
-##Extract with zstd (for .zst files)
+# Extract with zstd (for .zst files)
 async def _extract_with_zstd(path, archive_path):
     command = f"zstd -f --output-dir-flat {path} -d {archive_path}"
-    return await __run_cmds_unzipper(command)
+    return await run_cmds_on_cr(__run_cmds_unzipper, cmd=command)
 
 
 # Main function to extract files
@@ -44,10 +45,7 @@ async def extr_files(path, archive_path, password=None):
 
 # Get files in directory as a list
 async def get_files(path):
-    path_list = []
-    for r, d, f in os.walk(path):
-        for file in f:
-            path_list = [val for sublist in [[os.path.join(
+    path_list = [val for sublist in [[os.path.join(
         i[0], j) for j in i[2]] for i in os.walk(path)] for val in sublist]
     return sorted(path_list)
 
@@ -83,9 +81,9 @@ async def make_keyboard(paths, user_id, chat_id):
 #         )
 #         num += 1
 #     i_kbd.append(
-#         [InlineKeyboardButton(f"⚠ UPLOAD ALL ⚠", f"ext_a|{user_id}|{chat_id}")]
+#         [InlineKeyboardButton(f"Upload All ♻️", f"ext_a|{user_id}|{chat_id}")]
 #     )
 #     i_kbd.append(
-#         [InlineKeyboardButton("❌ CANCEL ❌", callback_data="cancel_dis")]
+#         [InlineKeyboardButton("Cancel ❌", callback_data="cancel_dis")]
 #     )
 #     return i_kbd
