@@ -1,4 +1,4 @@
-# Copyright (c) 2021 Itz-fork
+# Copyright (c) 2022 Itz-fork
 # Don't kang this else your dad is gae
 
 import os
@@ -16,7 +16,7 @@ from .ext_script.ext_helper import extr_files, get_files, make_keyboard
 from .ext_script.up_helper import send_file, answer_query
 from .commands import https_url_regex
 from unzipper.helpers_nexa.unzip_help import progress_for_pyrogram, TimeFormatter, humanbytes
-from unzipper.helpers_nexa.database import set_upload_mode
+from unzipper.helpers_nexa.database.upload_mode import set_upload_mode
 from config import Config
 
 
@@ -36,7 +36,16 @@ async def unzipper_cb(unzip_bot: Client, query: CallbackQuery):
         await query.edit_message_text(text=Messages.START_TEXT.format(query.from_user.mention), reply_markup=Buttons.START_BUTTON)
 
     elif query.data == "helpcallback":
-        await query.edit_message_text(text=Messages.HELP_TXT, reply_markup=Buttons.ME_GOIN_HOME)
+        await query.edit_message_text(text=Messages.HELP_TXT, reply_markup=Buttons.HELP_BTNS)
+
+    elif query.data == "extracthelp":
+        await query.edit_message_text(text=Messages.EXTRACT_HELP, reply_markup=Buttons.HELP_MENU_BTN)
+
+    elif query.data == "upmodhelp":
+        await query.edit_message_text(text=Messages.UPMODE_HELP, reply_markup=Buttons.HELP_MENU_BTN)
+
+    elif query.data == "thumbhelp":
+        await query.edit_message_text(text=Messages.THUMB_HELP, reply_markup=Buttons.HELP_MENU_BTN)
 
     elif query.data == "aboutcallback":
         await query.edit_message_text(text=Messages.ABOUT_TXT, reply_markup=Buttons.ME_GOIN_HOME, disable_web_page_preview=True)
@@ -169,7 +178,7 @@ async def unzipper_cb(unzip_bot: Client, query: CallbackQuery):
                 shutil.rmtree(f"{Config.DOWNLOAD_LOCATION}/{spl_data[1]}")
             except:
                 pass
-            return await query.message.edit("`I've already sent you those files 😐, Don't ask me to resend 😒!`")
+            return await query.message.edit("**Successfully Uploaded!** \n\n **Join @NexaBotsUpdates ❤️**")
         i_e_buttons = await make_keyboard(paths=rpaths, user_id=query.from_user.id, chat_id=query.message.chat.id)
         await query.message.edit("Select Files to Upload!", reply_markup=i_e_buttons)
 
