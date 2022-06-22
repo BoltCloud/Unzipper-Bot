@@ -1,62 +1,100 @@
-# Copyright (c) 2021 Itz-fork
+# Copyright (c) 2022 Itz-fork
 # Don't kang this else your dad is gae
+# This whole file is b.s btw
 
 from pyrogram.types import InlineKeyboardMarkup, InlineKeyboardButton
 
 # Inline buttons
+
+
 class Buttons:
     START_BUTTON = InlineKeyboardMarkup([
-            [
-                InlineKeyboardButton("HELP 📜", callback_data="helpcallback"),
-                InlineKeyboardButton("ABOUT ⁉️", callback_data="aboutcallback")
-            ]
-        ])
-    
+        [
+            InlineKeyboardButton("HELP 📜", callback_data="helpcallback"),
+            InlineKeyboardButton("ABOUT ⁉️", callback_data="aboutcallback")
+        ]
+    ])
+
+    HELP_BTNS = InlineKeyboardMarkup([
+        [
+            InlineKeyboardButton(
+                "EXTRACT 🗃", callback_data="extracthelp"),
+            InlineKeyboardButton(
+                "UPLOAD 📤", callback_data="upmodhelp")
+        ],
+        [
+            InlineKeyboardButton("THUMBNAIL 🖼", callback_data="thumbhelp")
+        ],
+        [
+            InlineKeyboardButton("BACK 🏡", callback_data="megoinhome")
+        ]
+    ])
+
+    HELP_MENU_BTN = InlineKeyboardMarkup([
+        [
+            InlineKeyboardButton("BACK TO HELP MENU ◀️",
+                                 callback_data="helpcallback")
+        ]
+    ])
+
     CHOOSE_E_F__BTNS = InlineKeyboardMarkup([
-            [
-                InlineKeyboardButton("FILE EXTRACT 📂", callback_data="extract_file|tg_file|no_pass"),
-            ],
-            [
-                InlineKeyboardButton("FILE (PASSWORD) EXTRACT 📂", callback_data="extract_file|tg_file|with_pass")
-            ],
-            [
-                InlineKeyboardButton("CANCEL ❌", callback_data="cancel_dis")
-            ]
-        ])
+        [
+            InlineKeyboardButton(
+                "EXTRACT FILE 📂", callback_data="extract_file|tg_file|no_pass"),
+        ],
+        [
+            InlineKeyboardButton(
+                "EXTRACT FILE (PASSWORD) 📂", callback_data="extract_file|tg_file|with_pass")
+        ],
+        [
+            InlineKeyboardButton("CANCEL ❌", callback_data="cancel_dis")
+        ]
+    ])
 
     CHOOSE_E_U__BTNS = InlineKeyboardMarkup([
-            [
-                InlineKeyboardButton("🔗 URL EXTRACT 📂", callback_data="extract_file|url|no_pass"),
-            ],
-            [
-                InlineKeyboardButton("🔗 (PASSWORD) URL EXTRACT 📂", callback_data="extract_file|url|with_pass")
-            ],
-            [
-                InlineKeyboardButton("CANCEL ❌", callback_data="cancel_dis")
-            ]
-        ])
+        [
+            InlineKeyboardButton(
+                "🔗 URL EXTRACT 📂", callback_data="extract_file|url|no_pass"),
+        ],
+        [
+            InlineKeyboardButton(
+                "🔗 URL EXTRACT (Password) 📂", callback_data="extract_file|url|with_pass")
+        ],
+        [
+            InlineKeyboardButton("CANCEL ❌", callback_data="cancel_dis")
+        ]
+    ])
 
     CLN_BTNS = InlineKeyboardMarkup([
-            [
-                InlineKeyboardButton("CLEAN MY FILES 😇", callback_data="cancel_dis")
-            ],
-            [
-                InlineKeyboardButton("TF! NOOO 😳", callback_data="nobully")
-            ]
-        ])
-    
+        [
+            InlineKeyboardButton("CLEAN MY FILES 😇",
+                                 callback_data="cancel_dis")
+        ],
+        [
+            InlineKeyboardButton("TF! NO!!! 😳", callback_data="nobully")
+        ]
+    ])
+
     ME_GOIN_HOME = InlineKeyboardMarkup([
-            [
-                InlineKeyboardButton("BACK 🏡", callback_data="megoinhome")
-            ]
-        ])
+        [
+            InlineKeyboardButton("BACK 🏡", callback_data="megoinhome")
+        ]
+    ])
 
     SET_UPLOAD_MODE_BUTTONS = InlineKeyboardMarkup([
+        [
+            InlineKeyboardButton("UPLOAD AS DOCUMENT 📁", callback_data="set_mode|doc")
+        ],
+        [
+            InlineKeyboardButton(
+                "UPLOAD AS VIDEO 📹", callback_data="set_mode|video")
+        ]
+    ])
+
+    def GOFILE_BTN(glink):
+        return InlineKeyboardMarkup([
             [
-                InlineKeyboardButton("UPLOAD AS FILE 📁", callback_data="set_mode|doc")
-            ],
-            [
-                InlineKeyboardButton("UPLOAD AS VIDEO 📹", callback_data="set_mode|video")
+                InlineKeyboardButton("GOFILE LINK 🔗", url=glink)
             ]
         ])
 
@@ -72,7 +110,9 @@ Send Your Archive File, Select The Appropriate Options You Wish To. You Can Clea
 **Powered By @Modzilla**
     """
 
-    HELP_TXT = """
+    HELP_TXT = """Get Help By Clicking On These Buttons 😇"""
+
+    EXTRACT_HELP = """
 **How To Extract? 🤔**
 
 `1. Send The File Or Link That You Want To Extract.`
@@ -87,6 +127,27 @@ Send Your Archive File, Select The Appropriate Options You Wish To. You Can Clea
     **2.** `Please don't send corrupted files! If you sent a one by a mistake just send` **/clean** `command!`
     
     **3.** `If your archive have 95 or more files in it then bot can't show all of extracted files to select from. So in that case if you can't see your file in the buttons just click on` "Upload All ♻️" `button. It'll send all extracted files to you!`
+    """
+
+    UPMODE_HELP = """
+**How To Change Upload Mode? 🤔**
+
+**1.** `Send` **/mode** `command to the bot.`
+**2.** `Select the appropriate option.`
+    """
+
+    THUMB_HELP = """
+**How To Change Thumbnail? 🤔**
+
+By default, videos uses a thumbnail generated by `ffmpeg` and files doesn't have one.
+If you want to set-up your own thumbnail, you can do so using following commands 👇,
+
+
+    • **/set_thumb** - To set a thumbnail
+
+    • **/get_thumb** - To get the current thumbnail
+
+    • **/del_thumb** - To delete the current thumbnail
     """
 
     ABOUT_TXT = """
@@ -132,7 +193,7 @@ Send Your Archive File, Select The Appropriate Options You Wish To. You Can Clea
  - `Please make sure that you selected the right mode!`
  - `May be Your archive format isn't supported 😔`
 
-**Please report this at @Iggie if you think this is a serious error**
+**Please report this at @Nexa_bots if you think this is a serious error**
     """
 
     ERROR_TXT = """
@@ -141,7 +202,7 @@ Send Your Archive File, Select The Appropriate Options You Wish To. You Can Clea
 **ERROR:** {}
 
 
-**Please report this at @Iggie if you think this is a serious error**
+**Please report this at @Nexa_bots if you think this is a serious error**
     """
 
     CANCELLED_TXT = """
@@ -158,6 +219,7 @@ Send Your Archive File, Select The Appropriate Options You Wish To. You Can Clea
 
     SELECT_UPLOAD_MODE_TXT = """
 `Please select the upload mode by clicking on below buttons!`
+
 **Current Upload mode is:** `{}`
 """
     CHANGED_UPLOAD_MODE_TXT = """
@@ -169,4 +231,4 @@ Send Your Archive File, Select The Appropriate Options You Wish To. You Can Clea
 ERROR_MSGS = [
     "Error",
     "Can't open as archive"
-    ]
+]
