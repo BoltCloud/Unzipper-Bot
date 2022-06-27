@@ -6,14 +6,16 @@ import re
 import shutil
 import subprocess
 
+from time import time
 from asyncio import sleep
 from config import Config
-from pyrogram import Client
 from gofile2 import Async_Gofile
+from unzipper import unzipperbot
 from pyrogram.errors import FloodWait
 from unzipper.modules.bot_data import Buttons
 from unzipper.helpers_nexa.database.thumbnail import get_thumbnail
 from unzipper.helpers_nexa.database.upload_mode import get_upload_mode
+from unzipper.helpers_nexa.unzip_help import progress_for_pyrogram, TimeFormatter
 
 
 # To get video duration and thumbnail
@@ -25,7 +27,7 @@ async def run_shell_cmds(command):
 
 
 # Returns thumbnail path
-async def return_thumb(uid, doc_f, isvid=False):
+async def get_or_gen_thumb(uid, doc_f, isvid=False):
     dbthumb = await get_thumbnail(int(uid))
     if dbthumb:
         return dbthumb
@@ -43,11 +45,12 @@ async def return_thumb(uid, doc_f, isvid=False):
 async def send_file(c_id, doc_f, query, full_path):
     try:
         cum = await get_upload_mode(c_id)
+
         # Checks if url file size is bigger than 2GB (Telegram limit)
         u_file_size = os.stat(doc_f).st_size
         if Config.TG_MAX_SIZE < int(u_file_size):
             # Uploads the file to gofile.io
-            upmsg = await Client.send_message(
+            upmsg = await unzipperbot.send_message(
                 chat_id=c_id,
                 text="`File Size is too large to send in telegram 🥶! Trying to upload this file to gofile.io now 😉!`"
             )
@@ -60,17 +63,48 @@ async def send_file(c_id, doc_f, query, full_path):
             os.remove(doc_f)
             return
 
+        tgupmsg = await unzipperbot.send_message(c_id, "`Processing ⚙️...`")
+        stm = time()
         # Uplaod type: Video
         if cum == "video":
-            sthumb = await return_thumb(c_id, doc_f, True)
+            sthumb = await get_or_gen_thumb(c_id, doc_f, True)
             vid_duration = await run_shell_cmds(f"ffprobe -v error -show_entries format=duration -of default=noprint_wrappers=1:nokey=1 {doc_f}")
-            await Client.send_video(chat_id=c_id, video=doc_f, caption="**Extracted by @ExtractFilesBot**", duration=int(vid_duration) if vid_duration.isnumeric() else 0, thumb=sthumb)
+            await unzipperbot.send_video(
+                chat_id=c_id,
+                video=doc_f,
+                caption="**Extracted by @NexaUnzipper_Bot**",
+                duration=int(vid_duration) if vid_duration.isnumeric() else 0,
+                thumb=sthumb,
+                progress=progress_for_pyrogram,
+                progress_args=("**Trying to upload 😇** \n", tgupmsg, stm))
         # Upload type: Document
         else:
-            sthumb = await return_thumb(c_id, doc_f)
-            await Client.send_document(chat_id=c_id, document=doc_f, caption="**Extracted by @ExtractFilesBot**", thumb=sthumb)
-        os.remove(doc_f)
-        os.remove(sthumb)
+            sthumb = await get_or_gen_thumb(c_id, doc_f)
+            await unzipperbot.send_document(
+                chat_id=c_id,
+                document=doc_f,
+                caption="**Extracted by @NexaUnzipper_Bot**",
+                thumb=sthumb,
+                progress=progress_for_pyrogram,
+                progress_args=("**Trying to upload 😇** \n", tgupmsg, stm))
+        etm = time()
+        # Edit the progress message
+        await tgupmsg.edit(f"""
+**Successfully uploaded!**
+        
+**File name:** `{os.path.basename(doc_f)}`
+**Uploaded in:** `{TimeFormatter(round(etm - stm))}`
+
+
+**Join @NexaBotsUpdates ❤️**
+        """)
+        # Cleanup (Added try except as thumbnail is sucking this code's duck)
+        try:
+            os.remove(doc_f)
+            if sthumb:
+                os.remove(sthumb)
+        except:
+            pass
     except FloodWait as f:
         sleep(f.x)
         return await send_file(c_id, doc_f, query, full_path)
@@ -78,8 +112,9 @@ async def send_file(c_id, doc_f, query, full_path):
         try:
             return await query.answer("Sorry! I can't find that file", show_alert=True)
         except:
-            return await Client.send_message(c_id, "Sorry! I can't find that file")
-    except BaseException:
+            return await unzipperbot.send_message(c_id, "Sorry! I can't find that file")
+    except BaseException as e:
+        print(e)
         shutil.rmtree(full_path)
 
 
