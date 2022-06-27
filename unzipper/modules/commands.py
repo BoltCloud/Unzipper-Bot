@@ -63,7 +63,7 @@ async def extract_dis_archive(_, message: Message):
 
 
 # Thumbnail stuff
-@Client.on_message(filters.private & filters.command(["save", "set_thumb"]))
+@Client.on_message(filters.private & filters.command(["save", "setthumbnail"]))
 async def save_dis_thumb(_, message: Message):
     prs_msg = await message.reply("`Processing ⚙️...`", reply_to_message_id=message.id)
     rply = message.reply_to_message
@@ -73,7 +73,7 @@ async def save_dis_thumb(_, message: Message):
     await prs_msg.edit("**Successfully saved the thumbnail ✅!**")
 
 
-@Client.on_message(filters.private & filters.command(["thget", "get_thumb"]))
+@Client.on_message(filters.private & filters.command(["thget", "showthumbnail"]))
 async def give_my_thumb(_, message: Message):
     prs_msg = await message.reply("`Processing ⚙️...`", reply_to_message_id=message.id)
     gthumb = await get_thumbnail(message.from_user.id)
@@ -84,7 +84,7 @@ async def give_my_thumb(_, message: Message):
     os.remove(gthumb)
 
 
-@Client.on_message(filters.private & filters.command(["thdel", "del_thumb"]))
+@Client.on_message(filters.private & filters.command(["thdel", "deletethumbnail"]))
 async def delete_my_thumb(_, message: Message):
     prs_msg = await message.reply("`Processing ⚙️...`", reply_to_message_id=message.id)
     texist = await get_thumbnail(message.from_user.id)
