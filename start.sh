@@ -1,7 +1,7 @@
 echo "
 ||| Unzipper Bot |||
 
-Copyright (c) 2021 Itz-fork
+Copyright (c) 2022 Itz-fork
 
 --> Join @Modzilla
 --> Follow Itz-fork on Github
