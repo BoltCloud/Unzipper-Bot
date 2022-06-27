@@ -78,7 +78,7 @@ async def give_my_thumb(_, message: Message):
     prs_msg = await message.reply("`Processing ⚙️...`", reply_to_message_id=message.id)
     gthumb = await get_thumbnail(message.from_user.id)
     if not gthumb:
-        return await prs_msg.edit("No thumbnails found. Please set one using `/set_thumb` command!")
+        return await prs_msg.edit("No thumbnails found. Please set one using `/setthumbnail` command!")
     await prs_msg.delete()
     await message.reply_photo(gthumb)
     os.remove(gthumb)
