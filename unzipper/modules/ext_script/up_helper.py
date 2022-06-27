@@ -72,7 +72,7 @@ async def send_file(c_id, doc_f, query, full_path):
             await unzipperbot.send_video(
                 chat_id=c_id,
                 video=doc_f,
-                caption="**Extracted by @NexaUnzipper_Bot**",
+                caption="**Extracted by @ExtractFilesBot**",
                 duration=int(vid_duration) if vid_duration.isnumeric() else 0,
                 thumb=sthumb,
                 progress=progress_for_pyrogram,
@@ -83,7 +83,7 @@ async def send_file(c_id, doc_f, query, full_path):
             await unzipperbot.send_document(
                 chat_id=c_id,
                 document=doc_f,
-                caption="**Extracted by @NexaUnzipper_Bot**",
+                caption="**Extracted by @ExtractFilesBot**",
                 thumb=sthumb,
                 progress=progress_for_pyrogram,
                 progress_args=("**Trying to upload 😇** \n", tgupmsg, stm))
@@ -96,7 +96,7 @@ async def send_file(c_id, doc_f, query, full_path):
 **Uploaded in:** `{TimeFormatter(round(etm - stm))}`
 
 
-**Join @NexaBotsUpdates ❤️**
+**Join @Modzilla ❤️**
         """)
         # Cleanup (Added try except as thumbnail is sucking this code's duck)
         try:
