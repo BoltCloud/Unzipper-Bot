@@ -1,4 +1,4 @@
-T# Copyright (c) 2022 Itz-fork
+# Copyright (c) 2022 Itz-fork
 # Don't kang this else your dad is gae
 import os
 import re
