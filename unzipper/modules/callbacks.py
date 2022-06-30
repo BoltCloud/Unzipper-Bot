@@ -6,27 +6,20 @@ import re
 import shutil
 
 from time import time
-from aiohttp import ClientSession
-from aiofiles import open as openfile
-from pyrogram import Client
-from pyrogram.types import CallbackQuery
-
-from .bot_data import Buttons, Messages, ERROR_MSGS
-from .ext_script.ext_helper import extr_files, get_files, make_keyboard
-from .ext_script.up_helper import send_file, answer_query
-from .commands import https_url_regex
-from unzipper.helpers_nexa.unzip_help import progress_for_pyrogram, TimeFormatter, humanbytes
-from unzipper.helpers_nexa.database.upload_mode import set_upload_mode
 from config import Config
-
-
-# Function to download files from direct link using aiohttp
-async def download(url, path):
-    async with ClientSession() as session:
-        async with session.get(url, timeout=None) as resp:
-            async with openfile(path, mode="wb") as file:
-                async for chunk in resp.content.iter_chunked(Config.CHUNK_SIZE):
-                    await file.write(chunk)
+from pyrogram import Client
+from aiohttp import ClientSession
+from pyrogram.types import CallbackQuery
+from unzipper.helpers_nexa.database.cloud import GofileDB
+from unzipper.helpers_nexa.database.upload_mode import set_upload_mode
+from unzipper.helpers_nexa.unzip_help import (TimeFormatter, humanbytes,
+                                              progress_for_pyrogram, download)
+from unzipper.helpers_nexa.database.split_arc import add_split_arc_user, del_split_arc_user
+from .backup import CloudBackup
+from .commands import https_url_regex
+from .bot_data import ERROR_MSGS, Buttons, Messages
+from .ext_script.up_helper import answer_query, send_file
+from .ext_script.ext_helper import extr_files, get_files, make_keyboard
 
 
 # Callbacks
@@ -44,12 +37,14 @@ async def unzipper_cb(unzip_bot: Client, query: CallbackQuery):
     elif query.data == "upmodhelp":
         await query.edit_message_text(text=Messages.UPMODE_HELP, reply_markup=Buttons.HELP_MENU_BTN)
 
+    elif query.data == "backuphelp":
+        await query.edit_message_text(text=Messages.BACKUP_HELP, reply_markup=Buttons.HELP_MENU_BTN)
+
     elif query.data == "thumbhelp":
         await query.edit_message_text(text=Messages.THUMB_HELP, reply_markup=Buttons.HELP_MENU_BTN)
 
     elif query.data == "aboutcallback":
         await query.edit_message_text(text=Messages.ABOUT_TXT, reply_markup=Buttons.ME_GOIN_HOME, disable_web_page_preview=True)
-
     elif query.data.startswith("set_mode"):
         user_id = query.from_user.id
         mode = query.data.split("|")[1]
@@ -64,6 +59,7 @@ async def unzipper_cb(unzip_bot: Client, query: CallbackQuery):
         splitted_data = query.data.split("|")
 
         try:
+            arc_name = ""
             if splitted_data[1] == "url":
                 url = r_message.text
                 # Double check
@@ -85,9 +81,9 @@ async def unzipper_cb(unzip_bot: Client, query: CallbackQuery):
                         # Send logs
                         await unzip_bot.send_message(chat_id=Config.LOGS_CHANNEL, text=Messages.LOG_TXT.format(user_id, url, u_file_size))
                         s_time = time()
-                        archive = f"{download_path}/archive_from_{user_id}{os.path.splitext(url)[1]}"
+                        arc_name = f"{download_path}/archive_from_{user_id}_{os.path.basename(url)}"
                         await answer_query(query, f"**Trying to download!** \n\n**Url:** `{url}` \n\n`This may take a while, Go and grab a coffee ☕️!`", unzip_client=unzip_bot)
-                        await download(url, archive)
+                        await download(url, arc_name)
                         e_time = time()
                     else:
                         return await query.message.edit("**Sorry I can't download that URL 🥺!**")
@@ -101,25 +97,36 @@ async def unzipper_cb(unzip_bot: Client, query: CallbackQuery):
                 log_msg = await r_message.forward(chat_id=Config.LOGS_CHANNEL)
                 await log_msg.reply(Messages.LOG_TXT.format(user_id, r_message.document.file_name, humanbytes(r_message.document.file_size)))
                 s_time = time()
-                archive = await r_message.download(
-                    file_name=f"{download_path}/archive_from_{user_id}{os.path.splitext(r_message.document.file_name)[1]}",
+                arc_name = f"{download_path}/archive_from_{user_id}_{r_message.document.file_name}"
+                await r_message.download(
+                    file_name=arc_name,
                     progress=progress_for_pyrogram, progress_args=(
                         "**Trying to Download!** \n", query.message, s_time)
                 )
                 e_time = time()
             else:
-                await answer_query(query, "Can't Find Details! Please contact support group!", answer_only=True, unzip_client=unzip_bot)
+                return await answer_query(query, "Can't Find Details! Please contact support group!", answer_only=True, unzip_client=unzip_bot)
 
             await answer_query(query, Messages.AFTER_OK_DL_TXT.format(TimeFormatter(round(e_time-s_time) * 1000)), unzip_client=unzip_bot)
+
+            # Checks if the archive is a splitted one
+            arc_ext = os.path.splitext(arc_name)[1]
+            if arc_ext.replace(".", "").isnumeric():
+                password = ""
+                if splitted_data[2] == "with_pass":
+                    password = (await unzip_bot.ask(chat_id=query.message.chat.id, text="**Please send me the password 🔑:**")).text
+                await answer_query(query, Messages.SPLITTED_FILE_TXT)
+                await add_split_arc_user(user_id, arc_name, password)
+                return
 
             if splitted_data[2] == "with_pass":
                 password = await unzip_bot.ask(chat_id=query.message.chat.id, text="**Please send me the password 🔑:**")
                 ext_s_time = time()
-                extractor = await extr_files(path=ext_files_dir, archive_path=archive, password=password.text)
+                extractor = await extr_files(path=ext_files_dir, archive_path=arc_name, password=password.text)
                 ext_e_time = time()
             else:
                 ext_s_time = time()
-                extractor = await extr_files(path=ext_files_dir, archive_path=archive)
+                extractor = await extr_files(path=ext_files_dir, archive_path=arc_name)
                 ext_e_time = time()
             # Checks if there is an error happend while extracting the archive
             if any(err in extractor for err in ERROR_MSGS):
@@ -204,8 +211,33 @@ async def unzipper_cb(unzip_bot: Client, query: CallbackQuery):
         except Exception as e:
             await query.message.edit(Messages.ERROR_TXT.format(e))
 
+    elif query.data.startswith("gf_setting"):
+        gf = GofileDB(query.from_user.id)
+        mode = query.data.split("-")[1]
+        if mode == "set":
+            tkn = await unzip_bot.ask(chat_id=query.message.chat.id, text="**Please send me your gofile.io token**")
+            await gf.save_token(tkn)
+            await tkn.delete()
+        elif mode == "del":
+            await gf.del_token()
+        elif mode == "get":
+            return await answer_query(query, "**Your gofile token:** `{}`".format(await gf.get_token()))
+        await answer_query(query, "**Done ✅!**")
+
+    elif query.data.startswith("cloudbackup"):
+        try:
+            clb = CloudBackup(query.from_user.id)
+            to = query.data.split("|")[1]
+            if to == "gofile":
+                await answer_query(query, "`Uploading extracted files to gofile.io! Please wait...`")
+                glnk = await clb.gofile_backup()
+                await answer_query(query, Messages.BACKUP_OK_TXT.format(glnk), btns=Buttons.GOFILE_BTN(glnk))
+        except Exception as e:
+            await answer_query(query, e)
+
     elif query.data == "cancel_dis":
         try:
+            await del_split_arc_user(query.from_user.id)
             shutil.rmtree(f"{Config.DOWNLOAD_LOCATION}/{query.from_user.id}")
             await query.message.edit(Messages.CANCELLED_TXT.format("Process Cancelled"))
         except:
