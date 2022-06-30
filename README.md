@@ -14,6 +14,7 @@
 - Extract archives from direct links
 - Custom thumbnail support
 - Upload files larger than 2GB to gofile.io
+- Backup extracted files to gofile.io
 - Broadcast Messages to users
 - Ban / Unban users from using your bot
 - Send logs in a private channel
