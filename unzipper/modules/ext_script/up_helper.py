@@ -124,7 +124,7 @@ async def rm_mark_chars(text: str):
 
 
 # Function to answer queries
-async def answer_query(query, message_text: str, answer_only: bool = False, unzip_client=None):
+async def answer_query(query, message_text: str, btns: list, answer_only: bool = False, unzip_client=None):
     try:
         if answer_only:
             await query.answer(await rm_mark_chars(message_text), show_alert=True)
@@ -132,4 +132,6 @@ async def answer_query(query, message_text: str, answer_only: bool = False, unzi
             await query.message.edit(message_text)
     except:
         if unzip_client:
-            await unzip_client.send_message(chat_id=query.message.chat.id, text=message_text)
+            await unzip_client.send_message(chat_id=query.message.chat.id, text=message_text, reply_markup=btns)
+        else:
+            await unzipperbot.send_message(chat_id=query.message.chat.id, text=message_text, reply_markup=btns)
