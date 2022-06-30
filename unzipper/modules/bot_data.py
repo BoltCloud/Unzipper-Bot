@@ -5,8 +5,6 @@
 from pyrogram.types import InlineKeyboardMarkup, InlineKeyboardButton
 
 # Inline buttons
-
-
 class Buttons:
     START_BUTTON = InlineKeyboardMarkup([
         [
@@ -23,7 +21,8 @@ class Buttons:
                 "UPLOAD 📤", callback_data="upmodhelp")
         ],
         [
-            InlineKeyboardButton("THUMBNAIL 🖼", callback_data="thumbhelp")
+            InlineKeyboardButton("THUMBNAIL 🖼", callback_data="thumbhelp"),
+            InlineKeyboardButton("BACKUP 🗄", callback_data="backuphelp")
         ],
         [
             InlineKeyboardButton("BACK 🏡", callback_data="megoinhome")
@@ -48,6 +47,25 @@ class Buttons:
         ],
         [
             InlineKeyboardButton("CANCEL ❌", callback_data="cancel_dis")
+        ]
+    ])
+
+    BACKUP_BTNS = InlineKeyboardMarkup([
+        [
+            InlineKeyboardButton(
+                "Gofile.io", callback_data="cloudbackup|gofile"),
+        ]
+    ])
+
+    GOFILE_ST_BTNS = InlineKeyboardMarkup([
+        [
+            InlineKeyboardButton(
+                "Set token", callback_data="gf_setting-set"),
+            InlineKeyboardButton(
+                "Delete Token", callback_data="gf_setting-del")
+        ],
+        [
+            InlineKeyboardButton("Get info", callback_data="gf_setting-get")
         ]
     ])
 
@@ -136,6 +154,14 @@ Send Your Archive File, Select The Appropriate Options You Wish To. You Can Clea
 **2.** `Select the appropriate option.`
     """
 
+    BACKUP_HELP = """
+**How To Backup My Files 🤔**
+This bot's server do a clean restart every 24 hours (heroku). Which means your files will be completely removed after sometime.
+Before that happens, you can backup all of your files to gofile.io .
+**1.** `Send` **/gofile** `command to the bot.`
+**2.** `Select the appropriate option.`
+"""
+
     THUMB_HELP = """
 **How To Change Thumbnail? 🤔**
 
@@ -169,6 +195,11 @@ If you want to set-up your own thumbnail, you can do so using following commands
 **File Name:** `{}`
 **File Size:** `{}`
     """
+
+    BACKUP_OK_TXT = """
+**Gofile backup was successful!**
+**Folder link:** {}
+"""
 
     AFTER_OK_DL_TXT = """
 **Successfully Downloaded**
