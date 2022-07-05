@@ -74,8 +74,11 @@ async def extract_dis_archive(_, message: Message):
         arc_name = f"{download_path}/archive_from_{user_id}_{message.document.file_name if is_doc else os.path.basename(message.text)}"
         if os.path.isfile(arc_name):
             return await unzip_msg.edit("`Dawg, I already have this file! 😑`")
-        s_time = time()
-        await message.download(
+        # Download the file
+        if is_url:
+        await download(message.text, arc_name, "**Trying to Download!** \n", unzip_msg)
+        else:
+            await message.download(
                 file_name=arc_name,
                 progress=progress_for_pyrogram, progress_args=(
                     "**Trying to Download!** \n", unzip_msg, s_time)
