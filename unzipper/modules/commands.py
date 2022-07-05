@@ -34,6 +34,7 @@ https_url_regex = ("((http|https)://)(www.)?" +
                    "{2,6}\\b([-a-zA-Z0-9@:%" +
                    "._\\+~#?&//=]*)")
 
+
 # Function to check user status (is banned or not)
 @Client.on_message(filters.private)
 async def _(_, message: Message):
@@ -73,11 +74,11 @@ async def extract_dis_archive(_, message: Message):
             return await unzip_msg.edit("`Dawg, this isn't a part of your splitted archive 😑!`")
         arc_name = f"{download_path}/archive_from_{user_id}_{message.document.file_name if is_doc else os.path.basename(message.text)}"
         if os.path.isfile(arc_name):
-            return await unzip_msg.edit("`Dawg, I already have this file! 😑`")
+            return await unzip_msg.edit("`Dawg, I already have this file 😑!`")
         # Download the file
         s_time = time()
         if is_url:
-        await download(message.text, arc_name, "**Trying to Download!** \n", unzip_msg)
+            await download(message.text, arc_name, "**Trying to Download!** \n", unzip_msg)
         else:
             await message.download(
                 file_name=arc_name,
