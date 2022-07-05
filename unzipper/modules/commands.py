@@ -75,6 +75,7 @@ async def extract_dis_archive(_, message: Message):
         if os.path.isfile(arc_name):
             return await unzip_msg.edit("`Dawg, I already have this file! 😑`")
         # Download the file
+        s_time = time()
         if is_url:
         await download(message.text, arc_name, "**Trying to Download!** \n", unzip_msg)
         else:
